@@ -38,18 +38,14 @@ def get_goldbees():
     return data['Close'].iloc[-1]
 
 def get_exchange_rates():
-    # Ticker for USD/INR and SAR/INR
     usd_inr_ticker = yf.Ticker("USDINR=X")
-    sar_inr_ticker = yf.Ticker("SARINR=X")
-    
-    # Fetch historical data for both
     usd_inr_data = usd_inr_ticker.history(period="1d")
-    sar_inr_data = sar_inr_ticker.history(period="1d")
-    
-    # Get the closing rate for each
+
     usd_inr = usd_inr_data['Close'].iloc[-1]
-    sar_inr = sar_inr_data['Close'].iloc[-1]
-    
+
+    # SAR is pegged to USD (1 USD ≈ 3.75 SAR), so SAR to INR is just:
+    sar_inr = usd_inr / 3.75
+
     return usd_inr, sar_inr
 
 def main():
