@@ -37,24 +37,33 @@ def get_goldbees():
     data = gold.history(period="1d")
     return data['Close'].iloc[-1]
 
-#def get_exchange_rates():
-#  c = CurrencyRates()
-#  usr_inr = c.get_rate('USD', 'INR')
-#  sar_inr = c.get_rate('SAR', 'INR')
-#  return usd_inr, sar_inr
+def get_exchange_rates():
+    # Ticker for USD/INR and SAR/INR
+    usd_inr_ticker = yf.Ticker("USDINR=X")
+    sar_inr_ticker = yf.Ticker("SARINR=X")
+    
+    # Fetch historical data for both
+    usd_inr_data = usd_inr_ticker.history(period="1d")
+    sar_inr_data = sar_inr_ticker.history(period="1d")
+    
+    # Get the closing rate for each
+    usd_inr = usd_inr_data['Close'].iloc[-1]
+    sar_inr = sar_inr_data['Close'].iloc[-1]
+    
+    return usd_inr, sar_inr
 
 def main():
   try:
     nifty = get_nifty_50()
     gold = get_goldbees()
-#    usd_inr, sar_inr = get_exchange_rates()
+    usd_inr, sar_inr = get_exchange_rates()
     today = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     message = (
       f"*📊 Morning Market Snapshot* ({today})\n\n"
       f"Nifty 50 : {nifty:.2f}\n"
       f"Gold Bees: ₹{gold:.2f}\n"
-#      f"💵 USD/INR: ₹{usd_inr:.2f}\n"
-#      f"🇸🇦 SAR/INR: ₹{sar_inr:.2f}"
+      f"💵 USD/INR: ₹{usd_inr:.2f}\n"
+      f"🇸🇦 SAR/INR: ₹{sar_inr:.2f}"
     )
     send_telegram_message(message)
   except Exception as e:
