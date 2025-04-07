@@ -2,7 +2,7 @@ name: Morning market report
 
 on:
   schedule:
-    - cron: '* * * * *'
+    - cron: '15 3 * * 1-5'
   workflow_dispatch:
 
 jobs:
@@ -15,6 +15,13 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
       - name: install dependecies
         run: |
           pip install -r requirements.txt
