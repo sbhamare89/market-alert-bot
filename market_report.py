@@ -28,12 +28,12 @@ def send_telegram_message(message):
   requests.post(url, data=data)
 
 def get_nifty_50():
-  nifty = yf.Ticket("^NSEI")
+  nifty = yf.Ticker("^NSEI")
   data = nifty.history(period="1d")
   return data['Close'][-1]
 
 def get_goldbees():
-  gold = yf.Ticket("GOLDBEES.BO")
+  gold = yf.Ticker("GOLDBEES.BO")
   data = gold.history(period="1d")
   return data['Close'][-1]
 
